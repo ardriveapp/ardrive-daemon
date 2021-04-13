@@ -94,7 +94,7 @@ async function downloadArDriveFileByTx(user: core.ArDriveUser, fileToDownload: c
 					// Once the file is finished being streamed, we read it and decrypt it.
 					const data = fs.readFileSync(fileToDownload.filePath);
 					const dataBuffer = Buffer.from(data);
-					const driveKey: Buffer = await deriveDriveKey(
+					const driveKey: Buffer = await core.deriveDriveKey(
 						user.dataProtectionKey,
 						fileToDownload.driveId,
 						user.walletPrivateKey
