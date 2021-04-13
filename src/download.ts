@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// upload.js
 import * as fs from 'fs';
 import * as common from './common';
 import * as getDb from './db_get';
@@ -8,12 +5,11 @@ import * as updateDb from './db_update';
 import * as core from 'ardrive-core-js';
 import path, { dirname } from 'path';
 import { createWriteStream } from 'fs';
-
 import Axios from 'axios';
 import ProgressBar from 'progress';
 
 // Downloads a single file from ArDrive by transaction
-async function downloadArDriveFileByTx(user: core.core.ArDriveUser, fileToDownload: core.core.ArFSFileMetaData) {
+async function downloadArDriveFileByTx(user: core.ArDriveUser, fileToDownload: core.ArFSFileMetaData) {
 	try {
 		// Get the parent folder's path
 		const parentFolder: core.ArFSFileMetaData = await getDb.getLatestFolderVersionFromSyncTable(
@@ -121,8 +117,8 @@ async function downloadArDriveFileByTx(user: core.core.ArDriveUser, fileToDownlo
 }
 
 // Takes an ArDrive File Data Transaction and writes to the database.
-async function getFileMetaDataFromTx(fileDataTx: core.core.GQLEdgeInterface, user: core.core.ArDriveUser) {
-	const fileToSync: core.core.ArFSFileMetaData = {
+async function getFileMetaDataFromTx(fileDataTx: core.GQLEdgeInterface, user: core.ArDriveUser) {
+	const fileToSync: core.ArFSFileMetaData = {
 		id: 0,
 		login: user.login,
 		appName: '',
