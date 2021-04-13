@@ -1,4 +1,3 @@
-// index.js
 import * as fs from 'fs';
 import * as core from 'ardrive-core-js';
 import path from 'path';
@@ -165,7 +164,7 @@ export async function addSharedPublicDrive(user: core.ArDriveUser, driveId: stri
 			return 'Invalid';
 		}
 
-		// Set the drives login
+		// Set the drive's login
 		sharedPublicDrive.login = user.login;
 
 		// Set the drive to sync locally
