@@ -5,8 +5,6 @@ import * as getDb from './db_get';
 import * as common from './common';
 import { deleteFromSyncTable } from './db_delete';
 import { DataItemJson } from 'arweave-bundles';
-import { TransactionUploader } from 'arweave/node/lib/transaction-uploader';
-import Transaction from 'arweave/node/lib/transaction';
 
 // Tags and creates a new data item (ANS-102) to be bundled and uploaded
 async function createArFSFileDataItem(
@@ -35,8 +33,8 @@ async function createArFSFileDataItem(
 			const encryptedData: core.ArFSEncryptedData = await core.getFileAndEncrypt(fileKey, fileToUpload.filePath);
 
 			// Set the private file metadata
-			fileToUpload.dataCipherIV;
-			fileToUpload.cipher;
+			fileToUpload.dataCipherIV = encryptedData.cipherIV;
+			fileToUpload.cipher = encryptedData.cipher;
 
 			// Get a signed data item for the encrypted data
 			dataItem = await core.prepareArFSDataItemTransaction(user, encryptedData.data, fileToUpload);
@@ -149,7 +147,7 @@ async function uploadArFSFileData(
 	user: core.ArDriveUser,
 	fileToUpload: core.ArFSFileMetaData
 ): Promise<{ dataTxId: string; arPrice: number }> {
-	let transaction: Transaction;
+	let transaction;
 	let dataTxId = '';
 	let arPrice = 0;
 	try {
@@ -200,7 +198,7 @@ async function uploadArFSFileData(
 		fileToUpload.dataTxId = transaction.id;
 
 		// Create the File Uploader object
-		const uploader: TransactionUploader = await core.createDataUploader(transaction);
+		const uploader = await core.createDataUploader(transaction);
 
 		// Set the file metadata to indicate it s being synchronized and update its record in the database
 		fileToUpload.fileDataSyncStatus = 2;
@@ -241,7 +239,7 @@ async function uploadArFSFileData(
 
 // Tags and Uploads a single file/folder metadata to your ArDrive using Arweave V2 Transactions
 async function uploadArFSFileMetaData(user: core.ArDriveUser, fileToUpload: core.ArFSFileMetaData) {
-	let transaction: Transaction;
+	let transaction;
 	let secondaryFileMetaDataTags = {};
 	try {
 		// create secondary metadata, used to further ID the file (with encryption if necessary)
@@ -289,7 +287,7 @@ async function uploadArFSFileMetaData(user: core.ArDriveUser, fileToUpload: core
 		fileToUpload.metaDataTxId = transaction.id;
 
 		// Create the File Uploader object
-		const uploader: TransactionUploader = await core.createDataUploader(transaction);
+		const uploader = await core.createDataUploader(transaction);
 
 		// Set the file metadata to indicate it s being synchronized and update its record in the database
 		fileToUpload.fileMetaDataSyncStatus = 2;
@@ -328,7 +326,7 @@ async function uploadArFSFileMetaData(user: core.ArDriveUser, fileToUpload: core
 // Tags and uploads a drive entity using Arweave V2 Transaction
 async function uploadArFSDriveMetaData(user: core.ArDriveUser, drive: core.ArFSDriveMetaData): Promise<boolean> {
 	try {
-		let transaction: Transaction;
+		let transaction;
 		// Create a JSON file, containing necessary drive metadata
 		const driveMetaDataTags = {
 			name: drive.driveName,
@@ -362,7 +360,7 @@ async function uploadArFSDriveMetaData(user: core.ArDriveUser, drive: core.ArFSD
 		drive.metaDataTxId = transaction.id;
 
 		// Create the File Uploader object
-		const uploader: TransactionUploader = await core.createDataUploader(transaction);
+		const uploader = await core.createDataUploader(transaction);
 
 		// Update the Drive table to include this transaction information
 		drive.metaDataSyncStatus = 2;
@@ -397,7 +395,7 @@ async function uploadArFSDataBundle(user: core.ArDriveUser, dataItems: DataItemJ
 	try {
 		const bundledDataTx = await core.prepareArFSBundledDataTransaction(user, dataItems);
 		if (bundledDataTx !== null) {
-			const uploader: TransactionUploader = await core.createDataUploader(bundledDataTx);
+			const uploader = await core.createDataUploader(bundledDataTx);
 
 			// Get current time and update the database
 			const currentTime = Math.round(Date.now() / 1000);
