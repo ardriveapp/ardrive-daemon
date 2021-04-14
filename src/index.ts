@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-import { ARDriveDaemon } from "./service";
+import { ARDriveDaemon } from './service';
 
-let instance: ARDriveDaemon;
-
-if (require.main === module) {
-  instance = new ARDriveDaemon();
-  instance.start();
-}
-=======
 export * from './common';
 export * from './download';
 export * from './files';
@@ -24,4 +16,10 @@ export {
 	getProfileWalletBalance
 } from './db_get';
 export { setProfileWalletBalance, setDriveToSync, addDriveToDriveTable, setProfileAutoSyncApproval } from './db_update';
->>>>>>> dev
+
+let instance: ARDriveDaemon;
+
+if (require.main === module) {
+	instance = new ARDriveDaemon();
+	instance.start();
+}
