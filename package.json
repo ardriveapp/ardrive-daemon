@@ -1,0 +1,52 @@
+{
+	"name": "ardrive-daemon",
+	"version": "0.0.1",
+	"description": "The ArDrive Daemon.",
+	"main": "./lib/index.js",
+	"bin": "./lib/index.js",
+	"types": "./lib/index.d.ts",
+	"dependencies": {
+		"@types/node": "^14.14.32",
+		"node-ipc": "^9.1.4"
+	},
+	"devDependencies": {
+		"@types/node-ipc": "^9",
+		"@types/prompt-sync": "^4.1.0",
+		"@types/prompts": "^2.0.9",
+		"@typescript-eslint/eslint-plugin": "^4.18.0",
+		"@typescript-eslint/parser": "^4.18.0",
+		"eslint": "^7.23.0",
+		"eslint-config-prettier": "^8.1.0",
+		"eslint-plugin-prettier": "latest",
+		"husky": "=4",
+		"lint-staged": ">=10",
+		"prettier": "^2.2.1",
+		"ts-node": "^9.1.1",
+		"tsc": "^1.20150623.0",
+		"typescript": "^4.2.4"
+	},
+	"scripts": {
+		"format": "prettier --write \"src/**/*.ts\"",
+		"lint": "eslint . --ext .ts",
+		"lintfix": "eslint . --ext .ts --fix",
+		"build": "tsc",
+		"prepare": "yarn run build",
+		"preversion": "yarn run lint",
+		"version": "yarn run format && git add -A src",
+		"postversion": "git push && git push --tags",
+		"start": "yarn run build && node ./lib/index.js"
+	},
+	"license": "AGPL-3.0-or-later",
+	"author": {
+		"name": "Permanent Data Solutions Inc",
+		"email": "info@ardrive.io",
+		"website": "https://ardrive.io"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ardriveapp/ardrive-cli.git"
+	},
+	"files": [
+		"lib/**/*"
+	]
+}
