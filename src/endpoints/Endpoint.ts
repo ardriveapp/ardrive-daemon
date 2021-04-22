@@ -49,9 +49,9 @@ let TRANSACTION_COUNT = 0;
 
 export abstract class Endpoint {
 	public abstract name: string;
-	protected abstract _clientHandler(data: string): string;
-	protected abstract _serverHandler(data: string): string;
-	public abstract fire(data?: string): Promise<any>;
+	protected abstract _clientHandler(data: string): string | Promise<string>;
+	protected abstract _serverHandler(data: string): string | Promise<string>;
+	public abstract fire(...args: any): Promise<any>;
 	private static transactions: Transaction[] = [];
 
 	// public setClientSocket(socket: Socket) {
@@ -68,7 +68,7 @@ export abstract class Endpoint {
 	};
 
 	public getClientHandler() {
-		return (event: SocketHandlerEvent) => {
+		return async (event: SocketHandlerEvent) => {
 			const data = Buffer.from(event.data);
 			const serializedTransaction = data.toString();
 			const incommingTransaction = JSON.parse(serializedTransaction) as ITransaction;
@@ -77,7 +77,7 @@ export abstract class Endpoint {
 			transactionInstance?.update(incommingTransaction);
 
 			if (transactionInstance && transactionInstance.response) {
-				const response = this._clientHandler(transactionInstance.response);
+				const response = await this._clientHandler(transactionInstance.response);
 				transactionInstance.handle(response);
 			} else {
 				console.error(`Invalid transaction: ${incommingTransaction}`);
@@ -86,7 +86,7 @@ export abstract class Endpoint {
 	}
 
 	public getServerHandler() {
-		return (event: SocketHandlerEvent, socket: Socket) => {
+		return async (event: SocketHandlerEvent, socket: Socket) => {
 			console.log(`Server handler :P`);
 			const data = Buffer.from(event.data);
 			const serializedTransaction = data.toString();
@@ -94,7 +94,7 @@ export abstract class Endpoint {
 			const transaction = JSON.parse(serializedTransaction) as ITransaction;
 			const transactionId = transaction.id;
 			if (typeof transactionId === 'number') {
-				const result = this._serverHandler(transaction.payload as string);
+				const result = await this._serverHandler(transaction.payload as string);
 				delete transaction.payload;
 				transaction.response = result;
 				const serializedResponse = JSON.stringify(transaction);
