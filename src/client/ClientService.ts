@@ -62,10 +62,10 @@ export class ClientService {
 		});
 	};
 
-	run = async <T>(endpointName: string, data: string): Promise<T> => {
+	run = async <T>(endpointName: string, ...args: any): Promise<T> => {
 		const endpoint = this._findEndpoint(endpointName);
 		console.info(`Firing ${endpoint?.name}`);
-		const tmp = endpoint?.fire(data);
+		const tmp = endpoint?.fire(...args);
 		return (await tmp) as T;
 	};
 
