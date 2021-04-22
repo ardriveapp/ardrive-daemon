@@ -5,7 +5,7 @@
 	"main": "./lib/index.js",
 	"types": "./lib/index.d.ts",
 	"dependencies": {
-		"ardrive-core-js": "https://github.com/ardriveapp/ardrive-core-js.git#task/remove-db-dependency",
+		"ardrive-core-js": "ardriveapp/ardrive-core-js#task/remove-db-dependency",
 		"arweave": "^1.10.11",
 		"arweave-bundles": "^1.0.3",
 		"axios": "^0.21.1",
