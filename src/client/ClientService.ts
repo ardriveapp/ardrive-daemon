@@ -1,9 +1,10 @@
 import { Socket } from 'net';
 import ipc from 'node-ipc';
 import { SERVICE_NAME, SERVICE_PATH } from '../constants';
-import { ALL_ENDPOINTS } from '../endpoints';
+import { ADD_USER_ENDPOINT, ALL_ENDPOINTS, CREATE_WALLET_ENDPOINT } from '../endpoints';
 import { Endpoint } from '../endpoints/Endpoint';
 import { getSocket } from '../constants';
+import { ArDriveUser, Wallet } from 'ardrive-core-js';
 
 export class ClientService {
 	static instance: ClientService;
@@ -69,7 +70,30 @@ export class ClientService {
 		return (await tmp) as T;
 	};
 
-	_findEndpoint(endpointName: string): Endpoint | undefined {
-		return this.endpoints.find((e) => e.name === endpointName);
-	}
+	_findEndpoint = (endpointName: string): Endpoint | undefined => {
+		return this.endpoints.find((e: Endpoint) => e.name === endpointName);
+	};
+
+	createArDriveWallet = async (): Promise<Wallet> => {
+		const wallet: Wallet = await this.run<Wallet>(CREATE_WALLET_ENDPOINT);
+		return wallet;
+	};
+
+	createArDriveUser = async (
+		login: string,
+		password: string,
+		wallet: Wallet,
+		syncFolderPath: string,
+		autoSyncApproval: boolean
+	): Promise<string> => {
+		const user: ArDriveUser = {
+			login,
+			dataProtectionKey: password,
+			walletPrivateKey: JSON.stringify(wallet.walletPrivateKey),
+			walletPublicKey: wallet.walletPublicKey,
+			syncFolderPath,
+			autoSyncApproval: autoSyncApproval ? 1 : 0
+		};
+		return await this.run<string>(ADD_USER_ENDPOINT, user);
+	};
 }

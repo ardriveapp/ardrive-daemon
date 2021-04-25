@@ -1,8 +1,8 @@
 import ipc from 'node-ipc';
-import { SERVICE_NAME, SERVICE_PATH } from '../constants';
+import { DATABASE_PATH, SERVICE_NAME, SERVICE_PATH } from '../constants';
 import { ALL_ENDPOINTS } from '../endpoints';
 import { Endpoint } from '../endpoints/Endpoint';
-import { Socket } from 'node:net';
+import { setupDatabase } from 'ardrive-core-js';
 
 let instance: ARDriveDaemon;
 
@@ -22,14 +22,16 @@ export class ARDriveDaemon {
 		ipc.config.socketRoot = '/tmp/';
 		ipc.config.retry = 1500;
 		this.endpoints.forEach((endpoint) => {
+			ipc.log(`Listening for ${endpoint.name}...`);
 			ipc.server.on(endpoint.name, endpoint.getServerHandler());
 		});
-		ipc.server.on('socket.disconnected', function (_, destroyedSocketID) {
-			ipc.log('client ' + destroyedSocketID + ' has disconnected!');
+		ipc.server.on('socket.disconnected', function (_) {
+			ipc.log('client ' + _ + ' has disconnected');
 		});
-		ipc.server.on('connect', (s: Socket) => {
-			console.log(`Connected ${s}`);
+		ipc.server.on('connect', () => {
+			ipc.log(`Client just connected`);
 		});
+		setupDatabase(DATABASE_PATH);
 	};
 
 	start() {

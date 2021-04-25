@@ -1,7 +1,8 @@
 import { Endpoint } from './Endpoint';
+import { ECHO_ENDPOINT } from './endpointNames';
 
-export class PingEndpoint extends Endpoint {
-	public name = 'ping';
+export class EchoEndpoint extends Endpoint {
+	public name = ECHO_ENDPOINT;
 
 	protected _clientHandler(response: any) {
 		return response;

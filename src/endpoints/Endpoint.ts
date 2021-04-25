@@ -24,7 +24,7 @@ class Transaction implements ITransaction {
 		});
 	}
 
-	serialize = (payload?: string): string => {
+	serialize = (payload?: any): string => {
 		const t: ITransaction = {
 			id: this.id,
 			response: this.response,
@@ -49,8 +49,8 @@ let TRANSACTION_COUNT = 0;
 
 export abstract class Endpoint {
 	public abstract name: string;
-	protected abstract _clientHandler(data: string): string | Promise<string>;
-	protected abstract _serverHandler(data: string): string | Promise<string>;
+	protected abstract _clientHandler(data: any): any | Promise<any>;
+	protected abstract _serverHandler(data: any): string | Promise<string>;
 	public abstract fire(...args: any): Promise<any>;
 	private static transactions: Transaction[] = [];
 
@@ -58,7 +58,7 @@ export abstract class Endpoint {
 	//   this.socket = socket;
 	// }
 
-	public clientEmmit = (data: Buffer) => {
+	public clientEmmit = (data?: Buffer) => {
 		const socket = getSocket(SERVICE_NAME);
 		socket.emit(this.name, data);
 	};
@@ -87,14 +87,14 @@ export abstract class Endpoint {
 
 	public getServerHandler() {
 		return async (event: SocketHandlerEvent, socket: Socket) => {
-			console.log(`Server handler :P`);
+			ipc.log(`Server handler :P`);
 			const data = Buffer.from(event.data);
 			const serializedTransaction = data.toString();
-			console.log(`Recieved transaction ${serializedTransaction}`);
+			// console.log(`Recieved transaction ${serializedTransaction}`);
 			const transaction = JSON.parse(serializedTransaction) as ITransaction;
 			const transactionId = transaction.id;
 			if (typeof transactionId === 'number') {
-				const result = await this._serverHandler(transaction.payload as string);
+				const result = await this._serverHandler(transaction.payload);
 				delete transaction.payload;
 				transaction.response = result;
 				const serializedResponse = JSON.stringify(transaction);

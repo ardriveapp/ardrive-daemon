@@ -12,3 +12,5 @@ export interface SocketHandlerEvent {
 	type: string;
 	data: Buffer;
 }
+
+export const DATABASE_PATH = './.ardrive-cli.db';
