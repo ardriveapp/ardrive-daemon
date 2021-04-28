@@ -1,4 +1,4 @@
-# ardrive-core-js
+# Ardrive-Daemon
 
 ArDrive Daemon is a cross-platform desktop wrapper of the ArDrive Core-JS and used for synchronizing data to and from Arweave.
 
@@ -26,11 +26,3 @@ yarn install --check-cache
 ````
 
 for external PR
-
-## Package:
-
-Npm package:
-
-npm add ardrive-core-js
-
-[![Gitopia](https://img.shields.io/endpoint?style=&url=https://gitopia.org/mirror-badge.json)](gitopia-repo)
