@@ -1,5 +1,5 @@
 import ipc from 'node-ipc';
-import { Socket } from 'node:net';
+import { Socket } from 'net';
 
 export const SERVICE_NAME = 'ARDriveDaemon';
 export const SERVICE_PATH = '/tmp/ARDriveDaemon.service';

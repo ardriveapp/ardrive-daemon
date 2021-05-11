@@ -1,4 +1,3 @@
-// import { arfsNewDriveAndRootFolder } from 'ardrive-core-js';
 import { ArDriveUser, ArFSDriveMetaData, getSharedPublicDrive } from 'ardrive-core-js';
 import { getAllUnSyncedPersonalDrivesByLoginFromDriveTable } from '../../db_get';
 import { addDriveToDriveTable } from '../../db_update';
