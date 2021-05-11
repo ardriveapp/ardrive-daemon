@@ -137,8 +137,8 @@ export class ClientService {
 		return await this.run<DriveData[]>(GET_UNSYNCED_DRIVES_ENDPOINT, login, drivePrivacy);
 	};
 
-	public createArDrive = async (name: string, privacy: 'private' | 'public'): Promise<string> => {
-		// Return the new drive id
-		return await this.run<string>(ADD_DIVE_ENDPOINT);
+	public createArDrive = async (driveName: string, isPublic = false): Promise<string> => {
+		// Returns the new drive id
+		return await this.run<string>(ADD_DIVE_ENDPOINT, driveName, isPublic);
 	};
 }

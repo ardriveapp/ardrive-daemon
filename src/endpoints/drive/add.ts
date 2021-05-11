@@ -32,11 +32,8 @@ export class AddDriveEndpoint extends Endpoint {
 		return drive.driveId;
 	}
 
-	public fire = async (driveName: string, isPublic = false, driveKey?: Buffer): Promise<string> => {
-		if (isPublic && !driveKey) {
-			throw new Error(`Private drives must have a key. Got ${driveKey}`);
-		}
-		const transactionInstance = this.clientSendData({ driveName, isPublic, driveKey });
+	public fire = async (driveName: string, isPublic = false): Promise<string> => {
+		const transactionInstance = this.clientSendData({ driveName, isPublic });
 		return await transactionInstance.promiseInstance;
 	};
 }
