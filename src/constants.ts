@@ -13,4 +13,13 @@ export interface SocketHandlerEvent {
 	data: Buffer;
 }
 
+export class ErrorResponse {
+	message = '';
+}
+
+export interface DriveData {
+	driveName: string;
+	driveId: string;
+}
+
 export const DATABASE_PATH = './.ardrive-cli.db';
