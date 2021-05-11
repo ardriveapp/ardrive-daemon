@@ -1,6 +1,6 @@
-import { Endpoint } from './Endpoint';
+import { Endpoint } from '../Endpoint';
 import { createArDriveWallet, Wallet } from 'ardrive-core-js';
-import { CREATE_WALLET_ENDPOINT } from './endpointNames';
+import { CREATE_WALLET_ENDPOINT } from '../endpointNames';
 
 /* FIXME:
  * wallets must be completely handled by daemon, there should be no need to allow user to get it

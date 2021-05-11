@@ -13,9 +13,7 @@ export class EchoEndpoint extends Endpoint {
 	}
 
 	public fire = async (data: string): Promise<string> => {
-		const transactionInstance = this.newTransaction();
-		const transactionData = transactionInstance.serialize(data);
-		this.clientEmmit(Buffer.from(transactionData));
+		const transactionInstance = this.clientSendData(data);
 		return await transactionInstance.promiseInstance;
 	};
 }

@@ -1,6 +1,5 @@
-import { ArDriveUser } from 'ardrive-core-js';
-import { addNewUser } from '../profile';
-import { Endpoint } from './Endpoint';
+import { addNewUser, ArDriveUser } from 'ardrive-core-js';
+import { Endpoint } from '../Endpoint';
 
 const BAD_USER = 'Bad user';
 
@@ -26,9 +25,7 @@ export class AddUserEndpoint extends Endpoint {
 
 	public fire = async (user: ArDriveUser): Promise<string> => {
 		const data = JSON.stringify(user);
-		const transactionInstance = this.newTransaction();
-		const transactionData = transactionInstance.serialize(data);
-		this.clientEmmit(Buffer.from(transactionData));
+		const transactionInstance = this.clientSendData(data);
 		return await transactionInstance.promiseInstance;
 	};
 }
