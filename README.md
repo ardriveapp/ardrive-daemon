@@ -74,7 +74,7 @@ That function will throw an error if the connection fails.
 
 ## Trigger actions
 
-All endpoints are accesible by the `run` method.
+All endpoints are accessible by the `run` method.
 
 ```ts
 const result = await service.run(endpointName: string, ...args: any);
