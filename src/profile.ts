@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as core from 'ardrive-core-js';
+import fs from 'fs';
+import core from 'ardrive-core-js';
 import path from 'path';
 import { Path } from 'typescript';
 import { asyncForEach, moveFolder } from './common';
