@@ -1,7 +1,7 @@
 # ArDrive Daemon
 
 
-ArDrive Daemon is a cross-platform wrapper of the ArDrive Core-JS and used for synchronizing data to and from Arweave.
+ArDrive Daemon is a cross-platform wrapper of the ArDrive Core-JS and is used for synchronizing data to and from Arweave.
 
 [![Gitopia](https://img.shields.io/endpoint?style=&url=https://gitopia.org/mirror-badge.json)](gitopia-repo)
 
@@ -25,14 +25,14 @@ $ yarn
 # Build
 
 All compiled source files are in `lib/` with the same folder structure than `src/`.
-For building the project you would run
+For building the project, you would run
 ```console
 $ yarn build
 ```
 
 That will compile both: the daemon service and the client
 
-# Runninging the daemon
+# Runninging the Daemon
 
 A service will start in daemon mode by doing
 
@@ -64,7 +64,7 @@ import { ClientService } from 'ardrive-daemon';
 const service = new ClientService();
 ```
 
-Before making any request to the already running daemon, the client has to connect:
+Before making any request to the already running Daemon, the client has to connect:
 
 ```ts
 await service.clientConnect();
@@ -72,7 +72,7 @@ await service.clientConnect();
 
 That function will throw an error if the connection fails.
 
-## Trigger actions
+## Trigger endpoint actions
 
 All endpoints are accessible by the `run` method.
 
@@ -80,13 +80,17 @@ All endpoints are accessible by the `run` method.
 const result = await service.run(endpointName: string, ...args: any);
 ```
 
-**endpointName** must be the `name` property of a valid `Endpoint`, and the rest of the args are the ones that the endpoint handler function requests.
+`endpointName` must be the `name` property of a valid `Endpoint`, and the rest of the args are the ones that the endpoint handler function requests.
+
+## Action response
+
+The response of an action will either be the returned value of the Endpoint. In the case of an error, the promise of the fired transaction will throw an error.
 
 ## Authentication
 
-```js
-// TODO
-```
+The authentication is managed by the `AuthenticationMiddleware`. It checks if the user has already authenticated in a specific session when an Endpoint specifies it requires authentication. An error will be thrown whenever the Daemon assumes you need to re-authenticate (for now, only once per session).
+
+The error thrown when the user is unauthenticated is `AuthenticationError`. It happens when the user is trying to acces a private endpoint and it hasn't authenticated yet. Or, if the provided credentials are wrong.
 
 ## Gracefully close the connection
 
