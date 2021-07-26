@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 
-let db: Database.Database | null;
+let db: Database.Database | null = null;
 
 // Executes a query on the database that does not return a result, like a delete or update
 export const run = (sql: any, params: any[] = []): any => {
